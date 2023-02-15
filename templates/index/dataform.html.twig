@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire -
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<h1 class="display-4" style="margin-top:30px;margin-bottom:40px;">{{ formName }}</h1>
+	<div>
+		{{ form(dataForm) }}
+		</div>
+	{% endblock %}

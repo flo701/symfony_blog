@@ -1,0 +1,75 @@
+CONSIGNE :
+	Reprendre la méthode squareDisplay de l'IndexController que vous avez recopié.
+	La méthode squareDisplay(), lorsqu'appelée, doit rendre une Response sous la forme d'un carré de couleur CSS dont la couleur change aléatoirement entre le bleu, le rouge, le vert, et le jaune.
+
+// ----------------------------------------------------------------------------------------------------------------
+
+CONSIGNE :
+    - Changer le paramètre de route $text de notre méthode de Controller displaySquare en un paramètre de route nommé $squareValue.
+    - Récupérer la valeur indiquée en paramètre de route et la placer dans une variable
+    - Utiliser la valeur récupérée pour déterminer une autre valeur CSS (par exemple, rouge déterminera la valeur couleur CSS "red"), et utiliser cette valeur pour déterminer la couleur du div présenté dans l'objet Response
+    - Si la valeur récupérée ne correspond pas à une des valeurs prédéfinies, remplacer par une valeur par défaut (noir)
+    - Si rien n'est indiqué, utiliser le paramètre de route par défaut pour sélectionner une nouvelle valeur (gris)
+
+// ----------------------------------------------------------------------------------------------------------------
+
+CONSIGNE :
+	- Sur le site Bootstrap, parmi les exemples proposés, accéder à l'exemple Sticky-Footer-Navbar: https://getbootstrap.com/docs/5.3/examples/sticky-footer-navbar/
+    - Modifier notre page Twig "base.html.twig", de manière à complètement intégrer la mise en page de l'exemple SFN de Bootstrap, tout en prenant soin de conserver la structure en bloc et les liens via fonction assets vers nos ressources CSS/JS.
+    - Dans cet exemple SFN, un fichier CSS supplémentaire, "sticky-footer-navbar.css" est nécessaire à la mise en page correcte. Récupérer ce fichier et le lier à notre application via la fonction asset() de Twig.
+
+// ----------------------------------------------------------------------------------------------------------------
+
+CONSIGNE :
+    - L'exemple Bootstrap Cheatsheet (feuille de triche) contient différents éléments génériques CSS Bootstrap lesquels nous seront utiles dans la conception de notre application blog. Retrouver cet exemple à l'adresse suivante: https://getbootstrap.com/docs/5.3/examples/cheatsheet/
+    - Créer, dans IndexController, une nouvelle méthode de classe, nommée cheatsheet(), avec comme nom de route 'index_cheatsheet', et comme adresse '/cheatsheet'. Cette nouvelle route rendra un render de la page twig cheatsheet.html.twig, située dans le dossier index dans le dossier template, que vous créerez.
+    - Le fichier cheatsheet.html.twig hérite de la page base.html.twig. Ce fichier présente plusieurs éléments à la suite présents dans la version cheatsheet de Bootstrap. Les éléments à récupérer de cette liste sont:
+        - Typography
+        - Tables
+        - Alerts
+        - Buttons
+        - List Groups
+        - Pagination
+    - Préparer dans header.html.twig, un bouton "cheatsheet" à la place du bouton déjà présent "home", et créer un lien hypertexte vers la route index_cheatsheet de notre Controller via la fonction Twig path().
+
+// ----------------------------------------------------------------------------------------------------------------
+
+CONSIGNE :
+    - Dans notre page Twig index.html.twig, avant la liste des bulletins, ajouter un bouton jaune avec comme label "Générer Bulletin", lequel contient un lien hypertexte renvoyant l'utilisateur vers la nouvelle méthode de Controller generateBulletin()
+    - Créer, dans IndexController, la méthode generateBulletin(), avec comme adresse "/generate" et comme nom de route "bulletin_generate". *** Cette route crée un nouveau Bulletin aléatoirement, avec un titre original, et persiste ce Bulletin vers la base de données ***. Cette méthode generateBulletin() doit se terminer avec ce return:
+    return $this->redirectToRoute('app_index');
+
+ Découpage de la consigne entre *** :   
+ Cette route :
+    - crée un nouveau Bulletin aléatoirement
+    	*Bulletin est une instance de la classe Entity "Bulletin"
+        *Pour créer une instance de classe, il faut utiliser le mot-clef "new"
+        *Pour créer un nouveau Bulletin, il faudra créer un Bulletin dans notre méthode generateBulletin() grâce au mot-clef new
+        *Conclusion: generateBulletin() doit contenir l'instruction "$bulletin = new Bulletin();"
+        
+    - avec un titre original
+        *Le titre est un attribut de type string de notre classe Bulletin
+        *Notre classe Bulletin, via son constructeur, crée automatiquement un titre unique si ce dernier n'est spécifié dans les paramètres du constructeur, grâce à la fonction prédéfinie PHP uniqid()
+        *Donc, afin d'avoir un titre original, il suffit de ne pas spécifier de valeur pour l'attribut "$title" et laisser le constructeur générer un titre original
+    
+    - persiste ce Bulletin vers la base de données.
+        *Nous avons vu dans DataFixtures que la persistance est effectuée par le "manager".
+        *Le "manager" permet la persistance grâce aux deux méthodes persist() et flush(). Il faudra donc y faire appel dans IndexController generateBulletin() après l'instanciation de notre Bulletin.
+        *Cependant, ObjectManager n'est pas disponible sur IndexController. Il existe une classe utilisée dans index(), "Entity Manager", laquelle est également gérée par Doctrine. Il est possible de l'utiliser pour faire appel aux méthodes persist() et flush().
+
+// ----------------------------------------------------------------------------------------------------------------
+
+CONSIGNE :
+	- Dans notre projet SymfonyBlog, créer un bouton à côté de chaque bouton Supprimer de chaque Bulletin. Ce bouton est un bouton vert avec comme label "Consulter", lequel nous renvoie vers une page avec une route particulière qui nous montre uniquement le bulletin concerné.
+    (La méthode de Controller devra s'appeler displayBulletin(), avec comme route '/bulletin/display/?à vous de voir?', et comme nom 'bulletin_display').
+
+    Etapes à suivre :
+        - Créer la route/méthode de Controller displayBulletin()
+        - Créer le bouton de consultation, lequel nous renvoie vers la route displayBulletin
+        - Route particulière: créer un paramètre de route, à quoi servira ce paramètre de route ?
+        - Publier uniquement le bulletin concerné: la valeur unique de chaque bulletin est son id, donc le paramètre de route identifiera le bulletin à son id. Le nom du paramètre sera donc {bulletinId}
+        - Afficher uniquement le bulletin concerné: ne publier que le bulletin concerné. Il s'agit d'utiliser la même méthode que deleteBulletin() afin d'isoler le bulletin, à savoir la méthode find() de notre bulletinRepository.
+    
+    
+    
+    

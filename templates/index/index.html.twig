@@ -1,0 +1,52 @@
+{# Ce fichier hérite de 'base.html.twig' et contient la vue de la page d'accueil #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Index -
+	{{parent()}}
+{% endblock %}
+
+{% block body %}
+
+<h1 class="display-2" style="margin-bottom:30px; margin-top:25px;">
+	{% if app.request.get('_route') == 'bulletin_display' %}
+		{{ bulletins[0].title }}
+	{% else %}
+		Liste des Bulletins
+	{% endif %}
+</h1>
+<a class="btn btn-success mb-4" href="{{ path('bulletin_create') }}">Créer un Bulletin</a>
+
+{% if bulletins is defined %}
+	{% for bulletin in bulletins %}
+		<div id="bulletin-list">
+			<div class="alert alert-{{ bulletin.color }}" style="margin-top:15px;">
+				<h3 class="display-5">{{ bulletin.title }}</h3>
+				<p class="h3">{{ bulletin.displayCategory }}</p>
+				<p>{{ bulletin.content|nl2br }}</p>
+				<p class="lead">Le
+					{{ bulletin.date|date("d/m/Y à G:i:s", "Europe/Paris") }}
+				</p>
+				<p>
+					<b>Tags :
+					</b>
+					{# <b> pour mettre en gras #}
+					{% if bulletin.tags is empty %}
+						<i>Aucun.</i>
+						{# <i> pour mettre en italique #}
+					{% else %}
+						{% for tag in bulletin.tags %}
+							<a href="{{ path('index_tag', {'tagId': tag.id}) }}" style='color:black; text-decoration:none;'>
+								{{ tag.name }}
+								;
+							</a>
+						{% endfor %}
+					{% endif %}
+				</p>
+				<a class="btn btn-danger me-2" href="{{ path('bulletin_delete', {'bulletinId' : bulletin.id}) }}">Supprimer</a>
+				<a class="btn btn-success me-2" href="{{ path('bulletin_display', {'bulletinId' : bulletin.id}) }}">Consulter</a>
+				<a class="btn btn-warning" href="{{ path('bulletin_update', {'bulletinId' : bulletin.id}) }}">Modifier</a>
+			</p>
+		</div>
+	</p>
+</div>{% endfor %}{% endif %}{% endblock %}
